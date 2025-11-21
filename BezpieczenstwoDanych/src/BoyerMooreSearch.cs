@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace BezpieczenstwoDanych
+namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
 {
     /// <summary>
-    /// Algorytm wyszukiwania pod³añcuchów metod¹ Boyera-Moore'a (Unicode-safe).
+    /// Algorytm wyszukiwania pod³añcuchów metod¹ Boyera-Moore'a.
     /// </summary>
     public class BoyerMooreSearch
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace BezpieczenstwoDanych
+namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
 {
     public static class Program
     {

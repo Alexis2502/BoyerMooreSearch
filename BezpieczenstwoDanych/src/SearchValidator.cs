@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BezpieczenstwoDanych
+namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
 {
     public class SearchAlgorithmValidator
     {
@@ -10,7 +10,7 @@ namespace BezpieczenstwoDanych
         public SearchAlgorithmValidator(BoyerMooreSearch algoToValidate)
         {
             this.algoToValidate = algoToValidate;
-            this.properlyWorkingAlgorithm = new BoyerMooreSearch();
+            properlyWorkingAlgorithm = new BoyerMooreSearch();
         }
 
         public bool Validate(string needle, string haystack)
