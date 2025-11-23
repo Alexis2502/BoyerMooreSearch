@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
+namespace BezpieczenstwoDanych.src
 {
     /// <summary>
-    /// Algorytm wyszukiwania pod³añcuchów metod¹ Boyera-Moore'a.
+    /// Algorytm wyszukiwania podï¿½aï¿½cuchï¿½w metodï¿½ Boyera-Moore'a.
     /// </summary>
     public class BoyerMooreSearch
     {
@@ -17,40 +17,40 @@ namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
         }
 
         /// <summary>
-        /// Tworzy s³ownik z³ych znaków dla wzorca.
+        /// Tworzy sï¿½ownik zï¿½ych znakï¿½w dla wzorca.
         /// </summary>
         private static Dictionary<char, int> BadCharHeuristic(string pattern)
         {
             var badChar = new Dictionary<char, int>();
             for (int i = 0; i < pattern.Length; i++)
             {
-                badChar[pattern[i]] = i; // zapisuje ostatnie wyst¹pienie
+                badChar[pattern[i]] = i; // zapisuje ostatnie wystï¿½pienie
             }
             return badChar;
         }
 
         /// <summary>
-        /// Szuka wszystkich wyst¹pieñ wzorca w tekœcie.
+        /// Szuka wszystkich wystï¿½pieï¿½ wzorca w tekï¿½cie.
         /// </summary>
         public List<int> Search(string pattern, string text)
         {
             if (string.IsNullOrEmpty(pattern))
-                throw new ArgumentException("Pattern nie mo¿e byæ null ani pusty", nameof(pattern));
+                throw new ArgumentException("Pattern nie moï¿½e byï¿½ null ani pusty", nameof(pattern));
             if (string.IsNullOrEmpty(text))
-                throw new ArgumentException("Text nie mo¿e byæ null ani pusty", nameof(text));
+                throw new ArgumentException("Text nie moï¿½e byï¿½ null ani pusty", nameof(text));
 
             var result = new List<int>();
             int m = pattern.Length;
             int n = text.Length;
 
             var badChar = BadCharHeuristic(pattern);
-            int s = 0; // przesuniêcie wzorca wzglêdem tekstu
+            int s = 0; // przesuniï¿½cie wzorca wzglï¿½dem tekstu
 
             while (s <= n - m)
             {
                 int j = m - 1;
 
-                // dopasowywanie od koñca wzorca
+                // dopasowywanie od koï¿½ca wzorca
                 while (j >= 0 && pattern[j] == text[s + j])
                     j--;
 
@@ -59,7 +59,7 @@ namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
                     // wzorzec dopasowany
                     result.Add(s);
 
-                    // przesuniêcie wzorca po znalezieniu dopasowania
+                    // przesuniï¿½cie wzorca po znalezieniu dopasowania
                     if (s + m < n)
                     {
                         char nextChar = text[s + m];
@@ -73,7 +73,7 @@ namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
                 }
                 else
                 {
-                    // przesuniêcie wzorca w przypadku z³ego znaku
+                    // przesuniï¿½cie wzorca w przypadku zï¿½ego znaku
                     char badCharInText = text[s + j];
                     int shift = badChar.ContainsKey(badCharInText) ? j - badChar[badCharInText] : j + 1;
                     s += Math.Max(1, shift);
