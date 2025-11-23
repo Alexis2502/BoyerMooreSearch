@@ -1,9 +1,8 @@
-using BezpieczenstwoDanych.src.BezpieczenstwoDanych;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace BezpieczenstwoDanych
+namespace BezpieczenstwoDanych.src
 {
     public partial class Form1 : Form
     {
@@ -25,7 +24,7 @@ namespace BezpieczenstwoDanych
 
             if (string.IsNullOrEmpty(text))
             {
-                lblValidation.Text = "Podaj tekst, w którym szukasz.";
+                lblValidation.Text = "Podaj tekst, w ktï¿½rym szukasz.";
                 return;
             }
 
@@ -39,18 +38,18 @@ namespace BezpieczenstwoDanych
             {
                 var results = searcher.Search(pattern, text);
 
-                lstResults.Items.Add($"Znaleziono {results.Count} dopasowañ.");
+                lstResults.Items.Add($"Znaleziono {results.Count} dopasowaï¿½.");
 
                 if (results.Count > 0)
                 {
-                    lstResults.Items.Add("Pozycje dopasowañ:");
+                    lstResults.Items.Add("Pozycje dopasowaï¿½:");
                     foreach (var pos in results)
                         lstResults.Items.Add(pos);
                 }
             }
             catch (Exception ex)
             {
-                lblValidation.Text = $"B³¹d: {ex.Message}";
+                lblValidation.Text = $"Bï¿½ï¿½d: {ex.Message}";
             }
         }
 
@@ -64,7 +63,7 @@ namespace BezpieczenstwoDanych
 
             if (string.IsNullOrEmpty(text))
             {
-                lblValidation.Text = "Podaj tekst, w którym szukasz.";
+                lblValidation.Text = "Podaj tekst, w ktï¿½rym szukasz.";
                 return;
             }
 
@@ -74,41 +73,43 @@ namespace BezpieczenstwoDanych
                 return;
             }
 
-            try
+        try
+        {
+            long memBefore = GC.GetAllocatedBytesForCurrentThread();
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var results = searcher.Search(pattern, text);
+
+            sw.Stop();
+            long memAfter = GC.GetAllocatedBytesForCurrentThread();
+
+            double elapsedMs = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+
+            int n = text.Length;
+            int m = pattern.Length;
+            int k = results.Count;
+
+            lstResults.Items.Add($"Znaleziono dopasowaÅ„: {k}");
+            lstResults.Items.Add($"Czas wykonania: {elapsedMs:F4} ms");
+            lstResults.Items.Add($"Przydzielono pamiÄ™ci: {memAfter - memBefore} bajtÃ³w");
+            lstResults.Items.Add($"DÅ‚ugoÅ›Ä‡ tekstu: {n}, dÅ‚ugoÅ›Ä‡ wzorca: {m}");
+            lstResults.Items.Add($"PrzybliÅ¼ona zÅ‚oÅ¼onoÅ›Ä‡: O(n/m * {Math.Max(1, k)})");
+
+            if (k > 0)
             {
-                long memBefore = GC.GetTotalMemory(true);
-                Stopwatch sw = Stopwatch.StartNew();
-
-                var results = searcher.Search(pattern, text);
-
-                sw.Stop();
-                long memAfter = GC.GetTotalMemory(false);
-
-                int n = text.Length;
-                int m = pattern.Length;
-                int k = results.Count;
-
-                lstResults.Items.Add($"Znaleziono dopasowañ: {k}");
-                lstResults.Items.Add($"Czas wykonania: {sw.ElapsedMilliseconds} ms");
-                lstResults.Items.Add($"Zu¿ycie pamiêci: {memAfter - memBefore} bajtów");
-                lstResults.Items.Add($"D³ugoœæ tekstu: {n}, d³ugoœæ wzorca: {m}");
-                lstResults.Items.Add($"Przybli¿ona z³o¿onoœæ: O(n/m * {Math.Max(1, k)})"); // prosta estymacja
-
-                if (k > 0)
-                {
-                    lstResults.Items.Add("Pozycje dopasowañ:");
-                    foreach (var pos in results)
-                        lstResults.Items.Add(pos);
-                }
-
-                // przewiniêcie do koñca
-                if (lstResults.Items.Count > 0)
-                    lstResults.TopIndex = lstResults.Items.Count - 1;
+                lstResults.Items.Add("Pozycje dopasowaÅ„:");
+                foreach (var pos in results)
+                    lstResults.Items.Add(pos);
             }
-            catch (Exception ex)
-            {
-                lblValidation.Text = $"B³¹d: {ex.Message}";
-            }
+
+            if (lstResults.Items.Count > 0)
+                lstResults.TopIndex = lstResults.Items.Count - 1;
+        }
+        catch (Exception ex)
+        {
+            lblValidation.Text = $"BÅ‚Ä…d: {ex.Message}";
+        }
+
         }
     }
 }
