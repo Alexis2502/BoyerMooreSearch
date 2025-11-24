@@ -77,22 +77,25 @@ namespace BezpieczenstwoDanych
             try
             {
                 long memBefore = GC.GetTotalMemory(true);
-                Stopwatch sw = Stopwatch.StartNew();
 
+                var sw = Stopwatch.StartNew();
                 var results = searcher.Search(pattern, text);
-
                 sw.Stop();
+
                 long memAfter = GC.GetTotalMemory(false);
+
+                // konwersja do nanosekund:
+                double ns = sw.ElapsedTicks * (1_000_000_000.0 / Stopwatch.Frequency);
 
                 int n = text.Length;
                 int m = pattern.Length;
                 int k = results.Count;
 
                 lstResults.Items.Add($"Znaleziono dopasowañ: {k}");
-                lstResults.Items.Add($"Czas wykonania: {sw.ElapsedMilliseconds} ms");
-                lstResults.Items.Add($"Zu¿ycie pamiêci: {memAfter - memBefore} bajtów");
+                lstResults.Items.Add($"Czas (ns): {ns:F0} ns");
+                lstResults.Items.Add($"Czas (µs): {(ns / 1000):F3} µs");
+                lstResults.Items.Add($"Zu¿ycie pamiêci: {memAfter - memBefore} B");
                 lstResults.Items.Add($"D³ugoœæ tekstu: {n}, d³ugoœæ wzorca: {m}");
-                lstResults.Items.Add($"Przybli¿ona z³o¿onoœæ: O(n/m * {Math.Max(1, k)})"); // prosta estymacja
 
                 if (k > 0)
                 {
@@ -101,9 +104,9 @@ namespace BezpieczenstwoDanych
                         lstResults.Items.Add(pos);
                 }
 
-                // przewiniêcie do koñca
                 if (lstResults.Items.Count > 0)
                     lstResults.TopIndex = lstResults.Items.Count - 1;
+
             }
             catch (Exception ex)
             {
