@@ -123,7 +123,17 @@ namespace BezpieczenstwoDanych.src
             {
                 lblValidation.Text = $"Błąd: {ex.Message}";
             }
+
+            try
+            {
+                var dist = CharDistributionHelper.PlotCharDistribution(text);
+            }
+            catch (Exception ex)
+            {
+                lstResults.Items.Add($"Błąd przy tworzeniu wykresu rozkładu znaków: {ex.Message}");
+            }
         }
+        
     }
 }
 

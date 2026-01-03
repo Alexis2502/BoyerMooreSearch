@@ -112,10 +112,11 @@ namespace BezpieczenstwoDanych.Tests
             string text =
                 "Normalny tekst zawiera slowa o roznej dlugosci i czestotliwosci wystepowania. " +
                 "Dzieki temu rozklad liter jest zblizony do naturalnego rozkladu jezykowego.";
-
             string pattern = "rozklad";
+
             
             var result = _bm.Search(pattern, text);
+            CharDistributionHelper.PlotCharDistribution(text);
             Assert.Equal(new List<int> {  90,  133 }, result);
         }
 
@@ -127,19 +128,9 @@ namespace BezpieczenstwoDanych.Tests
             string pattern = "ab";
 
             var result = _bm.Search(pattern, text);
-            var dist = GetCharDistribution(text);
-
-            _output.WriteLine("Tekst: ");
-            _output.WriteLine(text);
-            _output.WriteLine("Rozklad znakow: ");
-
-            SaveCharDistributionPlot(dist, _output);
+            CharDistributionHelper.PlotCharDistribution(text);
 
             Assert.NotNull(result);
-
-            // Wyświetlenie rozkładu znaków w konsoli testów
-            // foreach (var kv in dist.OrderBy(k => k.Key))
-            //     _output.WriteLine($"{kv.Key} = {kv.Value}");
         }
 
         // Rozklad powtarzalny
@@ -148,7 +139,10 @@ namespace BezpieczenstwoDanych.Tests
         {
             string text = new string('a', 200);
             string pattern = "a";
+
             var result = _bm.Search(pattern, text);
+            CharDistributionHelper.PlotCharDistribution(text);
+            
             Assert.Equal(200, result.Count);
         }
 
@@ -163,42 +157,6 @@ namespace BezpieczenstwoDanych.Tests
                 buffer[i] = chars[rand.Next(chars.Length)];
 
             return new string(buffer);
-        }
-
-        // Pomocniczna metoda do uzyskiwania rozkladu znakow
-        private static Dictionary<char, int> GetCharDistribution(string text)
-        {
-            return text
-                .GroupBy(c => c)
-                .ToDictionary(g => g.Key, g => g.Count());
-        }
-
-        // Pomocnicza metoda do zapisywania wykresu rozkladu znakow
-        private static void SaveCharDistributionPlot(
-            Dictionary<char, int> dist,
-            ITestOutputHelper output)
-        {
-            var ordered = dist.OrderBy(k => k.Key).ToList();
-            double[] values = ordered.Select(x => (double)x.Value).ToArray();
-            string[] labels = ordered.Select(x => x.Key.ToString()).ToArray();
-
-            var plt = new ScottPlot.Plot(800, 450);
-            plt.AddBar(values);
-            plt.XTicks(labels);
-            plt.Title("Rozkład znaków w tekście");
-            plt.YLabel("Liczba wystąpień");
-            plt.XLabel("Znak");
-
-            string binDir = AppContext.BaseDirectory;
-            string projectDir = Directory.GetParent(binDir)!.Parent!.Parent!.Parent!.FullName;
-            string reportsDir = Path.Combine(projectDir, "plots");
-            Directory.CreateDirectory(reportsDir);
-            string filePath = Path.Combine(
-                reportsDir,
-                $"CharDistribution_{DateTime.Now:yyyyMMdd_HHmmss}.png");
-
-            plt.SaveFig(filePath);
-            output.WriteLine($"Wykres zapisany do: {filePath}");
         }
     }
 }
