@@ -6,7 +6,7 @@ Projekt **BoyerMoreeSearch** zawiera implementację algorytmu **Boyer–Moore** 
 Został stworzony w **.NET 8** i wykorzystuje **Windows Forms** jako interfejs użytkownika.
 
 Dodatkowo repozytorium zawiera oddzielny projekt testowy zbudowany w oparciu o **xUnit**, umożliwiający jednostkowe testowanie algorytmu.
-Testy można uruchamiać bezpośrednio z wiersza poleceń (`dotnet test`).
+Testy można uruchamiać bezpośrednio z wiersza poleceń (`dotnet test`). Po uruchomieniu testu w katalogu **plots** znajdzie sie wykres z rozkladem znakow dla testu rozkladu losowego.
 
 ---
 
@@ -40,13 +40,14 @@ dotnet test
 
 ## Przydatne komendy
 
-| Komenda                                     | Opis                                 |
-| ------------------------------------------- | ------------------------------------ |
-| `dotnet build`                              | Buduje wszystkie projekty w solution |
-| `dotnet run --project BezpieczenstwoDanych` | Uruchamia aplikację WinForms         |
-| `dotnet test`                               | Uruchamia testy xUnit                |
-| `dotnet clean`                              | Czyści foldery `bin` i `obj`         |
-| `dotnet restore`                            | Pobiera pakiety NuGet                |
-| `dotnet nuget locals all --clear`           | Czyści cache pakietów NuGet          |
+| Komenda                                             | Opis                                       |
+| ----------------------------------------------------| -------------------------------------------|
+| `dotnet build`                                      | Buduje wszystkie projekty w solution       |
+| `dotnet run --project BezpieczenstwoDanych`         | Uruchamia aplikację WinForms               |
+| `dotnet test`                                       | Uruchamia testy xUnit                      |
+| `dotnet clean`                                      | Czyści foldery `bin` i `obj`               |
+| `dotnet restore`                                    | Pobiera pakiety NuGet                      |
+| `dotnet nuget locals all --clear`                   | Czyści cache pakietów NuGet                |
+| `dotnet test --logger "console;verbosity=detailed`  | Uruchamia testy z wyświetleniem infromacji |
 
 ---
