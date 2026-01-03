@@ -2,11 +2,9 @@
 
 ## Opis
 
-Projekt **BoyerMoreeSearch** zawiera implementację algorytmu **Boyer–Moore** do wyszukiwania podłańcuchów w tekście w języku C#.
-Został stworzony w **.NET 8** i wykorzystuje **Windows Forms** jako interfejs użytkownika.
+Projekt **BoyerMooreSearch** zawiera implementację algorytmu **Boyer–Moore** do wyszukiwania podłańcuchów w tekście. Aplikacja umożliwia wizualizację rozkładu liter w tekście w postaci wykresu słupkowego, pomiar czasu wykonania algorytmu w sposób bezpośredni i względny względem obliczenia dużej silni oraz monitorowanie przydzielonej pamięci podczas wyszukiwania. Całość została napisana w języku **C#**, wykorzystując **.NET 8** oraz **Windows Forms** jako interfejs użytkownika.
 
-Dodatkowo repozytorium zawiera oddzielny projekt testowy zbudowany w oparciu o **xUnit**, umożliwiający jednostkowe testowanie algorytmu.
-Testy można uruchamiać bezpośrednio z wiersza poleceń (`dotnet test`). Po uruchomieniu testu w katalogu **plots** znajdzie sie wykres z rozkladem znakow dla testu rozkladu losowego.
+Repozytorium zawiera również oddzielny projekt testowy oparty na **xUnit**, umożliwiający jednostkowe testowanie algorytmu. Testy można uruchamiać bezpośrednio z wiersza poleceń przy użyciu polecenia (`dotnet test`).
 
 ---
 
