@@ -1,10 +1,10 @@
-using BezpieczenstwoDanych.src.BezpieczenstwoDanych;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace BezpieczenstwoDanych
-{
+
+namespace BezpieczenstwoDanych.src
+    {
     public partial class Form1 : Form
     {
         private BoyerMooreSearch searcher = new BoyerMooreSearch();
@@ -25,7 +25,7 @@ namespace BezpieczenstwoDanych
 
             if (string.IsNullOrEmpty(text))
             {
-                lblValidation.Text = "Podaj tekst, w którym szukasz.";
+                lblValidation.Text = "Podaj tekst, w ktÃ³rym szukasz.";
                 return;
             }
 
@@ -39,18 +39,18 @@ namespace BezpieczenstwoDanych
             {
                 var results = searcher.Search(pattern, text);
 
-                lstResults.Items.Add($"Znaleziono {results.Count} dopasowañ.");
+                lstResults.Items.Add($"Znaleziono {results.Count} dopasowaÅ„");
 
                 if (results.Count > 0)
                 {
-                    lstResults.Items.Add("Pozycje dopasowañ:");
+                    lstResults.Items.Add("Pozycje dopasowaÅ„:");
                     foreach (var pos in results)
                         lstResults.Items.Add(pos);
                 }
             }
             catch (Exception ex)
             {
-                lblValidation.Text = $"B³¹d: {ex.Message}";
+                lblValidation.Text = $"BÅ‚Ä…d: {ex.Message}";
             }
         }
 
@@ -64,51 +64,76 @@ namespace BezpieczenstwoDanych
 
             if (string.IsNullOrEmpty(text))
             {
-                lblValidation.Text = "Podaj tekst, w którym szukasz.";
+                lblValidation.Text = "Podaj tekst, w ktÃ³rym szukasz";
                 return;
             }
 
             if (string.IsNullOrEmpty(pattern))
             {
-                lblValidation.Text = "Podaj wzorzec do wyszukania.";
+                lblValidation.Text = "Podaj wzorzec do wyszukania";
                 return;
             }
 
             try
             {
-                long memBefore = GC.GetTotalMemory(true);
-                Stopwatch sw = Stopwatch.StartNew();
+                Stopwatch swFactorial = Stopwatch.StartNew();
+                MathUtils.Factorial(50000);
+                swFactorial.Stop();
 
+                double factorialMs =
+                    swFactorial.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+
+                long memBefore = GC.GetAllocatedBytesForCurrentThread();
+
+                Stopwatch swSearch = Stopwatch.StartNew();
                 var results = searcher.Search(pattern, text);
+                swSearch.Stop();
 
-                sw.Stop();
-                long memAfter = GC.GetTotalMemory(false);
+                long memAfter = GC.GetAllocatedBytesForCurrentThread();
+
+                double searchMs =
+                    swSearch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+
+                double ratio = searchMs / factorialMs;
 
                 int n = text.Length;
                 int m = pattern.Length;
                 int k = results.Count;
 
-                lstResults.Items.Add($"Znaleziono dopasowañ: {k}");
-                lstResults.Items.Add($"Czas wykonania: {sw.ElapsedMilliseconds} ms");
-                lstResults.Items.Add($"Zu¿ycie pamiêci: {memAfter - memBefore} bajtów");
-                lstResults.Items.Add($"D³ugoœæ tekstu: {n}, d³ugoœæ wzorca: {m}");
-                lstResults.Items.Add($"Przybli¿ona z³o¿onoœæ: O(n/m * {Math.Max(1, k)})"); // prosta estymacja
+
+                lstResults.Items.Add($"IloÅ›Ä‡ dopasowaÅ„: {k}");
+                lstResults.Items.Add($"Czas Boyer-Moore: {searchMs:F4} ms");
+                lstResults.Items.Add($"Czas obliczania silni: {factorialMs:F4} ms");
+                lstResults.Items.Add($"Stosunek czasÃ³w (Boyer-Moore / Silnia): {ratio:F4}");
+                lstResults.Items.Add($"IloÅ›Ä‡ przydzielonej pamiÄ™ci: {memAfter - memBefore} bajtÃ³w");
+                lstResults.Items.Add($"DÅ‚ugoÅ›Ä‡ tekstu: {n}, dÅ‚ugoÅ›Ä‡ wzorca: {m}");
+                lstResults.Items.Add($"PrzybliÅ¼ona zÅ‚oÅ¼onosc: O(n/m * {Math.Max(1, k)})");
 
                 if (k > 0)
                 {
-                    lstResults.Items.Add("Pozycje dopasowañ:");
+                    lstResults.Items.Add("Pozycje dopasowaÅ„:");
                     foreach (var pos in results)
                         lstResults.Items.Add(pos);
                 }
 
-                // przewiniêcie do koñca
                 if (lstResults.Items.Count > 0)
                     lstResults.TopIndex = lstResults.Items.Count - 1;
             }
             catch (Exception ex)
             {
-                lblValidation.Text = $"B³¹d: {ex.Message}";
+                lblValidation.Text = $"BÅ‚Ä…d: {ex.Message}";
+            }
+
+            try
+            {
+                var dist = CharDistributionHelper.PlotCharDistribution(text);
+            }
+            catch (Exception ex)
+            {
+                lstResults.Items.Add($"BÅ‚Ä…d przy tworzeniu wykresu rozkÅ‚adu znakÃ³w: {ex.Message}");
             }
         }
+        
     }
 }
+

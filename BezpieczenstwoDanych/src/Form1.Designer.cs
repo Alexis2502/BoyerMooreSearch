@@ -1,4 +1,4 @@
-﻿namespace BezpieczenstwoDanych
+﻿namespace BezpieczenstwoDanych.src
 {
     partial class Form1
     {

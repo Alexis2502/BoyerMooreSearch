@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BezpieczenstwoDanych.src.BezpieczenstwoDanych
+namespace BezpieczenstwoDanych.src
 {
     public class SearchAlgorithmValidator
     {
